@@ -687,7 +687,7 @@ function renderSvgGroupedBar(svgEl, tooltipEl, categories, seriesA, seriesB, opt
   const w = svgEl.clientWidth || 900;
   const h = +svgEl.getAttribute('height') || 300;
   const maxVal = Math.max(1, ...seriesA, ...seriesB);
-  const marginL = Math.max(50, fmtAxisCompact(maxVal).length * 8 + 22), marginR = 16, marginT = 16, marginB = 46;
+  const marginL = Math.max(50, fmtAxisCompact(maxVal).length * 8 + 22), marginR = 16, marginT = 26, marginB = 46;
   const plotW = w - marginL - marginR, plotH = h - marginT - marginB;
   const n = categories.length;
   const groupW = plotW / n;
@@ -710,6 +710,8 @@ function renderSvgGroupedBar(svgEl, tooltipEl, categories, seriesA, seriesB, opt
     const isActive = filters[opts.dimKey] && filters[opts.dimKey].has(cat);
     svg += `<rect data-cat="${cat}" data-series="target" x="${ax}" y="${marginT+plotH-ah}" width="${barW}" height="${ah}" rx="4" fill="var(--brand-blue-500)" opacity="${isActive?1:0.92}" style="cursor:pointer;${isActive?'stroke:var(--brand-blue-700);stroke-width:2;':''}"></rect>`;
     svg += `<rect data-cat="${cat}" data-series="actual" x="${bx}" y="${marginT+plotH-bh}" width="${barW}" height="${bh}" rx="4" fill="var(--series-2)" opacity="${isActive?1:0.92}" style="cursor:pointer;${isActive?'stroke:var(--brand-blue-700);stroke-width:2;':''}"></rect>`;
+    if (av>0) svg += `<text class="prod-bar-value" x="${ax+barW/2}" y="${marginT+plotH-ah-6}" text-anchor="middle" style="font-size:9.5px; fill:var(--brand-blue-700);">${fmtAxisCompact(av)}</text>`;
+    if (bv>0) svg += `<text class="prod-bar-value" x="${bx+barW/2}" y="${marginT+plotH-bh-6}" text-anchor="middle" style="font-size:9.5px; fill:var(--series-2);">${fmtAxisCompact(bv)}</text>`;
     const label = cat.length > 14 ? cat.slice(0,13)+'…' : cat;
     svg += `<text class="axis-text" x="${gx+groupW/2}" y="${marginT+plotH+18}" text-anchor="middle">${label}</text>`;
   });
